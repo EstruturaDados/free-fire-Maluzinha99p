@@ -38,6 +38,8 @@ int main() {
 
     freefire mochila;
 
+    inicializarLista(&mochila);
+
     do{
         menuPrincipal();
         scanf("%d", &opcao);
@@ -127,8 +129,6 @@ void inicializarLista(freefire *lista)
 // Após inserir, marca a mochila como "não ordenada por nome".
 void inserirItem(freefire *lista, const char *texto, const char *tipos, int *quantidade)
 {
-    inicializarLista(lista);
-
     if(lista->total_itens == QUANT_ITENS)
     {
         printf("\nA mochila esta cheia! Tire algum item de quiser adicionar outro...");
@@ -161,12 +161,12 @@ void listarItens(freefire *lista)
 
      printf("\n\n--- ITENS DA MOCHILA (%d/10) ---\n", lista->total_itens);
      printf("--------------------------------------------------\n");
-     printf("NOME\t| TIPO\t| QUANTIDADE\n");
+     printf("NOME\t\t| TIPO\t\t| QUANTIDADE\n");
      printf("--------------------------------------------------\n");
 
      for(int i = 0; i < lista->total_itens; i++)
      {
-        printf("%s\t| %s\t| %d\n", lista->item[i], lista->tipo[i], lista->quant);
+        printf("%s\t\t| %s\t\t| %d\n", lista->item[i], lista->tipo[i], lista->quant);
         printf("--------------------------------------------------\n\n");
 
      }
