@@ -18,6 +18,7 @@ typedef struct{
 }freefire;
 
 //DECLARANCO AS FUNÇÕES
+void limparBuffer();
 void menuPrincipal();
 void inicializarLista(freefire *lista);
 void inserirItem(freefire *lista, const char *texto, const char *tipos, int *quantidade);
@@ -38,11 +39,12 @@ int main() {
     do{
         menuPrincipal();
         scanf("%d", &opcao);
+        limparBuffer();
 
         switch (opcao)
         {
             case 1:
-                printf("\n\nADICIONAR NOVO ITEM ---\n");
+                printf("\n\n--- ADICIONAR NOVO ITEM ---\n");
                 printf("Nome do item: ");
                 fgets(itens, TAM_STRING, stdin);
 
@@ -52,10 +54,14 @@ int main() {
                 printf("Digite a quantidade: ");
                 scanf("%d", &quantidade);
                 
+                //excluindo o \n
+                itens[strcspn(itens, "\n")] = 0;
+                tipos[strcspn(itens, "\n")] = 0;
+                
                 inserirItem(&mochila, itens, tipos, quantidade);
 
             case 0:
-                printf("\nClique no Enter para continuar...");
+                printf("\nClique no Enter para continuar...\n");
                 while(getchar() != '\n');
                 getchar();
         }
@@ -79,6 +85,11 @@ int main() {
 // Armazena até 10 itens coletados.
 // Variáveis de controle: numItens (quantidade atual), comparacoes (análise de desempenho), ordenadaPorNome (para controle da busca binária).
 
+//limparBuffer()
+void limparBuffer()
+{
+    while(getchar() != '\n');
+}
 // limparTela():
 // Simula a limpeza da tela imprimindo várias linhas em branco.
 
@@ -134,6 +145,25 @@ void inserirItem(freefire *lista, const char *texto, const char *tipos, int *qua
 
 // listarItens():
 // Exibe uma tabela formatada com todos os componentes presentes na mochila.
+void listarItens(freefire *lista)
+{
+     if(lista->total_itens == 0)
+     {
+        printf("Não há itens na lista!\n");
+     }
+
+     printf("--- ITENS DA MOCHILA (%d/10)\n", lista->total_itens);
+     printf("--------------------------------------------------");
+     printf("NOME\t TIPO\t QUANTIDADE\n");
+     printf("--------------------------------------------------");
+
+     for(int i = 0; i < lista->total_itens; i++)
+     {
+        printf("%s\t %s\t %d\n", lista->item[i], lista->tipo[i], lista->quant);
+        printf("--------------------------------------------------");
+
+     }
+}
 
 // menuDeOrdenacao():
 // Permite ao jogador escolher como deseja ordenar os itens.
