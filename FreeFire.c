@@ -164,16 +164,17 @@ void removerItem(freefire *lista, char *texto)
         if(pos == -1)
         {
             printf("O item \"%s\" não existe!", texto);
+            return;
         } 
 
-        for(i = pos; i < QUANT_ITENS; i++)
+        for(i = pos; i < lista->total_itens; i++)
         {
-            strcmp(lista->item[i], lista->item[i+1]);
-            strcmp(lista->tipo[i], lista->tipo[i+1]);
-            lista->quant = lista->quant;
+            strcpy(lista->item[i], lista->item[i+1]);
+            strcpy(lista->tipo[i], lista->tipo[i+1]);
+            lista->quant[i] = lista->quant[i+1];
         }
 
-        lista->quantidade--;
+        lista->total_itens--;
         printf("Item removido com sucesso!\n");
     }
 }
