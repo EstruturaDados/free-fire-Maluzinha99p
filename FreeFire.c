@@ -149,6 +149,34 @@ void inserirItem(freefire *lista, const char *texto, const char *tipos, int *qua
 // removerItem():
 // Permite remover um componente da mochila pelo nome.
 // Se encontrado, reorganiza o vetor para preencher a lacuna.
+void removerItem(freefire *lista, char *texto)
+{
+    int pos = -1;
+
+    for(int i = 0; i < QUANT_ITENS; i++)
+    {
+        if(strcmp(lista->item[i], texto) == 0)
+        {
+            pos = i;
+            break;
+        }
+
+        if(pos == -1)
+        {
+            printf("O item \"%s\" não existe!", texto);
+        } 
+
+        for(i = pos; i < QUANT_ITENS; i++)
+        {
+            strcmp(lista->item[i], lista->item[i+1]);
+            strcmp(lista->tipo[i], lista->tipo[i+1]);
+            lista->quant = lista->quant;
+        }
+
+        lista->quantidade--;
+        printf("Item removido com sucesso!\n");
+    }
+}
 
 // listarItens():
 // Exibe uma tabela formatada com todos os componentes presentes na mochila.
