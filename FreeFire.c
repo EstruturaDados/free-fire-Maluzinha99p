@@ -13,7 +13,7 @@
 typedef struct{
     char item[QUANT_ITENS][TAM_STRING];
     char tipo[QUANT_ITENS][TAM_STRING];
-    int quant;
+    int quant[QUANT_ITENS];
     int total_itens;
 }freefire;
 
@@ -21,8 +21,9 @@ typedef struct{
 void limparBuffer();
 void menuPrincipal();
 void inicializarLista(freefire *lista);
-void inserirItem(freefire *lista, const char *texto, const char *tipos, int *quantidade);
+void inserirItem(freefire *lista, const char *texto, const char *tipos, int quantidade);
 void listarItens(freefire *lista);
+void removerItem(freefire *lista, char *texto);
 
 
 int main() {
@@ -34,7 +35,7 @@ int main() {
     // 5. Realizar busca binária por nome
     // 0. Sair
     int opcao, quantidade;
-    char itens[TAM_STRING], tipos[TAM_STRING];
+    char itens[TAM_STRING], tipos[TAM_STRING], item_remover[TAM_STRING];
 
     freefire mochila;
 
@@ -63,15 +64,36 @@ int main() {
                 tipos[strcspn(itens, "\n")] = 0;
                 
                 inserirItem(&mochila, itens, tipos, quantidade);
+                limparBuffer();
+            break;
+
+            case 2:
+                printf("\n--- REMOVENDO ITEN ---\n");
+                printf("Qual item deseja remover: ");
+                fgets(item_remover, TAM_STRING, stdin);
+
+                item_remover[strcspn(item_remover, "\n")] = 0;
+
+                removerItem(&mochila, item_remover);
+                listarItens(&mochila);
+                printf("Clique Enter para continuar...");
+                limparBuffer();
             break;
 
             case 3:
                 listarItens(&mochila);
+                printf("\nClique Enter para continuar...");
+                limparBuffer();
             break;
             case 0:
-                printf("\nClique no Enter para continuar...\n");
+                printf("\nClique Enter para continuar...");
                 while(getchar() != '\n');
                 getchar();
+            break;
+
+            default:
+                printf("Item inexistente!\n");
+            break;
         }
         
     }while(opcao != 0);
@@ -127,18 +149,18 @@ void inicializarLista(freefire *lista)
 // Adiciona um novo componente à mochila se houver espaço.
 // Solicita nome, tipo, quantidade e prioridade.
 // Após inserir, marca a mochila como "não ordenada por nome".
-void inserirItem(freefire *lista, const char *texto, const char *tipos, int *quantidade)
+void inserirItem(freefire *lista, const char *texto, const char *tipos, int quantidade)
 {
     if(lista->total_itens == QUANT_ITENS)
     {
-        printf("\nA mochila esta cheia! Tire algum item de quiser adicionar outro...");
+        printf("\nA mochila esta cheia! Tire algum item de quiser adicionar outro...\n\n");
         while(getchar() != '\n');
         getchar();
     }
 
     strcpy(lista->item[lista->total_itens], texto);
     strcpy(lista->tipo[lista->total_itens], tipos);
-    lista->quant = quantidade;
+    lista->quant[lista->total_itens] = quantidade;
 
     lista->total_itens++;
     printf("\nItens \"%s\" cadastrado com sucesso!\n", texto);
@@ -160,23 +182,23 @@ void removerItem(freefire *lista, char *texto)
             pos = i;
             break;
         }
-
-        if(pos == -1)
-        {
-            printf("O item \"%s\" não existe!", texto);
-            return;
-        } 
-
-        for(i = pos; i < lista->total_itens; i++)
-        {
-            strcpy(lista->item[i], lista->item[i+1]);
-            strcpy(lista->tipo[i], lista->tipo[i+1]);
-            lista->quant[i] = lista->quant[i+1];
-        }
-
-        lista->total_itens--;
-        printf("Item removido com sucesso!\n");
     }
+
+    if(pos == -1)
+    {
+        printf("O item \"%s\" não existe!\n", texto);
+        return;
+    } 
+
+    for(int i = pos; i < lista->total_itens; i++)
+    {
+        strcpy(lista->item[i], lista->item[i+1]);
+        strcpy(lista->tipo[i], lista->tipo[i+1]);
+        lista->quant[i] = lista->quant[i+1];
+    }
+
+    lista->total_itens--;
+    printf("Item removido com sucesso!\n");
 }
 
 // listarItens():
@@ -195,9 +217,7 @@ void listarItens(freefire *lista)
 
      for(int i = 0; i < lista->total_itens; i++)
      {
-        printf("%s\t\t| %s\t\t| %d\n", lista->item[i], lista->tipo[i], lista->quant);
-        printf("--------------------------------------------------\n\n");
-
+        printf("%s\t\t| %s\t\t| %d\n", lista->item[i], lista->tipo[i], lista->quant[i]);
      }
 }
 
