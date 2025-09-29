@@ -7,6 +7,18 @@
 // Nível: Mestre
 // Este programa simula o gerenciamento avançado de uma mochila com componentes coletados durante a fuga de uma ilha.
 // Ele introduz ordenação com critérios e busca binária para otimizar a gestão dos recursos.
+#define QUANT_ITENS 10
+#define TAM_STRING 100
+
+typedef struct{
+    char item[QUANT_ITENS][TAM_STRING];
+    char tipo[QUANT_ITENS][TAM_STRING];
+    int quant;
+    int total_itens;
+}mochila;
+
+
+void menuPrincipal();
 
 int main() {
     // Menu principal com opções:
@@ -16,7 +28,15 @@ int main() {
     // 4. Ordenar os itens por critério (nome, tipo, prioridade)
     // 5. Realizar busca binária por nome
     // 0. Sair
+    int opcao;
 
+    do{
+        menuPrincipal();
+
+
+
+    }while(opcao != 0);
+    
     // A estrutura switch trata cada opção chamando a função correspondente.
     // A ordenação e busca binária exigem que os dados estejam bem organizados.
 
@@ -39,6 +59,18 @@ int main() {
 
 // exibirMenu():
 // Apresenta o menu principal ao jogador, com destaque para status da ordenação.
+void menuPrincipal()
+{
+    printf("\n\n=========================================\n");
+    printf(" MOCHILA DE SOBREVIVENCIA - CODIGO ILHA\n");
+    printf("=========================================\n");
+
+    printf("1 - Inserir item (LOOT) \n");
+    printf("2 - Remover item\n");
+    printf("3 - Listar itens da Mochila\n");
+    printf("0 - Sair do sistema");
+    printf("Escolha a sua opção: ");
+}
 
 // inserirItem():
 // Adiciona um novo componente à mochila se houver espaço.
