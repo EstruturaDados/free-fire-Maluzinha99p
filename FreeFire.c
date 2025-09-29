@@ -15,10 +15,12 @@ typedef struct{
     char tipo[QUANT_ITENS][TAM_STRING];
     int quant;
     int total_itens;
-}mochila;
+}freefire;
 
-
+//DECLARANCO AS FUNÇÕES
 void menuPrincipal();
+void inicializarLista(freefire *lista);
+void inserirItem(freefire *lista, const char *texto, const char *tipos, int *quantidade);
 
 int main() {
     // Menu principal com opções:
@@ -28,15 +30,38 @@ int main() {
     // 4. Ordenar os itens por critério (nome, tipo, prioridade)
     // 5. Realizar busca binária por nome
     // 0. Sair
-    int opcao;
+    int opcao, quantidade;
+    char itens[TAM_STRING], tipos[TAM_STRING];
+
+    freefire mochila;
 
     do{
         menuPrincipal();
+        scanf("%d", &opcao);
 
+        switch (opcao)
+        {
+            case 1:
+                printf("\n\nADICIONAR NOVO ITEM ---\n");
+                printf("Nome do item: ");
+                fgets(itens, TAM_STRING, stdin);
 
+                printf("Digite o tipo (arma, munição, cura, etc): ");
+                fgets(tipos, TAM_STRING, stdin);
 
+                printf("Digite a quantidade: ");
+                scanf("%d", &quantidade);
+                
+                inserirItem(&mochila, itens, tipos, quantidade);
+
+            case 0:
+                printf("\nClique no Enter para continuar...");
+                while(getchar() != '\n');
+                getchar();
+        }
+        
     }while(opcao != 0);
-    
+
     // A estrutura switch trata cada opção chamando a função correspondente.
     // A ordenação e busca binária exigem que os dados estejam bem organizados.
 
@@ -61,21 +86,47 @@ int main() {
 // Apresenta o menu principal ao jogador, com destaque para status da ordenação.
 void menuPrincipal()
 {
-    printf("\n\n=========================================\n");
+    printf("=========================================\n");
     printf(" MOCHILA DE SOBREVIVENCIA - CODIGO ILHA\n");
     printf("=========================================\n");
 
     printf("1 - Inserir item (LOOT) \n");
     printf("2 - Remover item\n");
     printf("3 - Listar itens da Mochila\n");
-    printf("0 - Sair do sistema");
+    printf("0 - Sair do sistema\n");
+    printf("-------------------------------------------\n");
     printf("Escolha a sua opção: ");
+}
+
+//inicializarLista
+void inicializarLista(freefire *lista)
+{
+    lista->total_itens = 0;
 }
 
 // inserirItem():
 // Adiciona um novo componente à mochila se houver espaço.
 // Solicita nome, tipo, quantidade e prioridade.
 // Após inserir, marca a mochila como "não ordenada por nome".
+void inserirItem(freefire *lista, const char *texto, const char *tipos, int *quantidade)
+{
+    inicializarLista(lista);
+
+    if(lista->total_itens == QUANT_ITENS)
+    {
+        printf("\nA mochila esta cheia! Tire algum item de quiser adicionar outro...");
+        while(getchar() != '\n');
+        getchar();
+    }
+
+    strcpy(lista->item[lista->total_itens], texto);
+    strcpy(lista->tipo[lista->total_itens], tipos);
+    lista->quant = quantidade;
+
+    lista->total_itens++;
+    printf("\nItens \"%s\" cadastrado com sucesso!\n", texto);
+
+}
 
 // removerItem():
 // Permite remover um componente da mochila pelo nome.
