@@ -22,6 +22,8 @@ void limparBuffer();
 void menuPrincipal();
 void inicializarLista(freefire *lista);
 void inserirItem(freefire *lista, const char *texto, const char *tipos, int *quantidade);
+void listarItens(freefire *lista);
+
 
 int main() {
     // Menu principal com opções:
@@ -59,7 +61,11 @@ int main() {
                 tipos[strcspn(itens, "\n")] = 0;
                 
                 inserirItem(&mochila, itens, tipos, quantidade);
+            break;
 
+            case 3:
+                listarItens(&mochila);
+            break;
             case 0:
                 printf("\nClique no Enter para continuar...\n");
                 while(getchar() != '\n');
@@ -136,6 +142,7 @@ void inserirItem(freefire *lista, const char *texto, const char *tipos, int *qua
 
     lista->total_itens++;
     printf("\nItens \"%s\" cadastrado com sucesso!\n", texto);
+    printf("-------------------------------------------\n\n");
 
 }
 
@@ -152,15 +159,15 @@ void listarItens(freefire *lista)
         printf("Não há itens na lista!\n");
      }
 
-     printf("--- ITENS DA MOCHILA (%d/10)\n", lista->total_itens);
-     printf("--------------------------------------------------");
-     printf("NOME\t TIPO\t QUANTIDADE\n");
-     printf("--------------------------------------------------");
+     printf("\n\n--- ITENS DA MOCHILA (%d/10) ---\n", lista->total_itens);
+     printf("--------------------------------------------------\n");
+     printf("NOME\t| TIPO\t| QUANTIDADE\n");
+     printf("--------------------------------------------------\n");
 
      for(int i = 0; i < lista->total_itens; i++)
      {
-        printf("%s\t %s\t %d\n", lista->item[i], lista->tipo[i], lista->quant);
-        printf("--------------------------------------------------");
+        printf("%s\t| %s\t| %d\n", lista->item[i], lista->tipo[i], lista->quant);
+        printf("--------------------------------------------------\n\n");
 
      }
 }
