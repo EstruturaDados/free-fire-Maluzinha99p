@@ -19,11 +19,12 @@ typedef struct{
 
 //DECLARANCO AS FUNÇÕES
 void limparBuffer();
-void menuPrincipal();
+void menuPrincipal(freefire *lista);
 void inicializarLista(freefire *lista);
 void inserirItem(freefire *lista, const char *texto, const char *tipos, int quantidade);
 void listarItens(freefire *lista);
 void removerItem(freefire *lista, char *texto);
+void limparTela();
 
 
 int main() {
@@ -42,7 +43,7 @@ int main() {
     inicializarLista(&mochila);
 
     do{
-        menuPrincipal();
+        menuPrincipal(&mochila);
         scanf("%d", &opcao);
         limparBuffer();
 
@@ -65,6 +66,11 @@ int main() {
                 
                 inserirItem(&mochila, itens, tipos, quantidade);
                 limparBuffer();
+
+                listarItens(&mochila);
+                printf("Pressione Enter para continuar...");
+                limparBuffer();
+                limparTela();
             break;
 
             case 2:
@@ -78,12 +84,14 @@ int main() {
                 listarItens(&mochila);
                 printf("Clique Enter para continuar...");
                 limparBuffer();
+                limparTela();
             break;
 
             case 3:
                 listarItens(&mochila);
                 printf("\nClique Enter para continuar...");
                 limparBuffer();
+                limparTela();
             break;
             case 0:
                 printf("\nClique Enter para continuar...");
@@ -122,18 +130,28 @@ void limparBuffer()
 }
 // limparTela():
 // Simula a limpeza da tela imprimindo várias linhas em branco.
+void limparTela() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
 
 // exibirMenu():
 // Apresenta o menu principal ao jogador, com destaque para status da ordenação.
-void menuPrincipal()
+void menuPrincipal(freefire *lista)
 {
     printf("=========================================\n");
     printf(" MOCHILA DE SOBREVIVENCIA - CODIGO ILHA\n");
     printf("=========================================\n");
+    printf("Itens da mochila %d/10\n\n", lista->total_itens);
 
     printf("1 - Inserir item (LOOT) \n");
     printf("2 - Remover item\n");
     printf("3 - Listar itens da Mochila\n");
+    printf("4 - Buscar item na mochila\n");
     printf("0 - Sair do sistema\n");
     printf("-------------------------------------------\n");
     printf("Escolha a sua opção: ");
@@ -210,7 +228,7 @@ void listarItens(freefire *lista)
         printf("Não há itens na lista!\n");
      }
 
-     printf("\n\n--- ITENS DA MOCHILA (%d/10) ---\n", lista->total_itens);
+     printf("\n--- ITENS DA MOCHILA (%d/10) ---\n", lista->total_itens);
      printf("--------------------------------------------------\n");
      printf("NOME\t\t| TIPO\t\t| QUANTIDADE\n");
      printf("--------------------------------------------------\n");
