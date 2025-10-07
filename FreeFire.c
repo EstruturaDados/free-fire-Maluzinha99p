@@ -26,6 +26,8 @@ void inserirItem(freefire *lista, const char *texto, const char *tipos, int quan
 void listarItens(freefire *lista);
 void removerItem(freefire *lista, char *texto);
 void limparTela();
+void menuDeOrdenacao();
+void insertionSort(freefire lista[], int tamanho, int op);
 
 
 int main() {
@@ -36,7 +38,7 @@ int main() {
     // 4. Ordenar os itens por critério (nome, tipo, prioridade)
     // 5. Realizar busca binária por nome
     // 0. Sair
-    int opcao, quantidade, p;
+    int opcao, quantidade, p, op;
     char itens[TAM_STRING], tipos[TAM_STRING], item_remover[TAM_STRING];
 
     freefire mochila;
@@ -97,6 +99,13 @@ int main() {
                 limparBuffer();
                 limparTela();
             break;
+
+            case 4:
+                menuDeOrdenacao();
+                printf("Escolha sua opcao: ");
+                scanf("%d", &op);
+                insertionSort(&mochila, QUANT_ITENS, op);
+
             case 0:
                 printf("\nClique Enter para continuar...");
                 while(getchar() != '\n');
@@ -250,6 +259,16 @@ void listarItens(freefire *lista)
 // Permite ao jogador escolher como deseja ordenar os itens.
 // Utiliza a função insertionSort() com o critério selecionado.
 // Exibe a quantidade de comparações feitas (análise de desempenho).
+void menuDeOrdenacao()
+{
+    printf("--- Estratégia de Oranizaçõa ---\n");
+    printf("Como deseja organizar os componentes? ");
+    printf("1 - Por Nome\n");
+    printf("2 - Por Tipo\n");
+    printf("3 - Por Prioridade de Montagem\n");
+    printf("0 - Cancelar\n");
+    printf("------------------------------------\n");
+}
 
 // insertionSort():
 // Implementação do algoritmo de ordenação por inserção.
@@ -257,6 +276,53 @@ void listarItens(freefire *lista)
 // - Por nome (ordem alfabética)
 // - Por tipo (ordem alfabética)
 // - Por prioridade (da mais alta para a mais baixa)
+void insertionSort(freefire lista[], int tamanho, int op)
+{
+    freefire chave;
+    int j;
+
+    for(int i = 1; i < tamanho; i++)
+    {
+        chave = lista[i];
+        j = i-1;
+
+        if(op == 1)
+        {
+            while(j >= 0 && strcmp(lista[j].item, chave.item) > 0)
+            {
+                lista[j + 1] = lista[j];
+                j--;
+            }
+
+            lista[j + 1] = chave;
+        }
+
+        else if(op == 2)
+        {
+            while(j >= 0 && strmp(lista[j].tipo, chave.tipo) > 0)
+            {
+                lista[j + 1] = lista[j];
+                j--;
+            }
+            lista[j + 1] = chave;
+        }
+
+        else if(op == 3)
+        {
+            while(j <= 0 && lista[j].prioridade < chave.prioridade)
+            {
+                lista[j + 1] = lista[j];
+                j--;
+            }
+            lista[j + 1] = chave;
+        }
+        
+        else if(op == 0)
+        {
+            break;
+        }
+    }
+}
 
 // buscaBinariaPorNome():
 // Realiza busca binária por nome, desde que a mochila esteja ordenada por nome.
