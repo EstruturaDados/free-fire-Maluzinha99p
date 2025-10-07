@@ -148,11 +148,12 @@ void menuPrincipal(freefire *lista)
     printf("=========================================\n");
     printf("Itens da mochila %d/10\n\n", lista->total_itens);
 
-    printf("1 - Inserir item (LOOT) \n");
-    printf("2 - Remover item\n");
-    printf("3 - Listar itens da Mochila\n");
-    printf("4 - Buscar item na mochila\n");
-    printf("0 - Sair do sistema\n");
+    printf("1 - Inserir Componente) \n");
+    printf("2 -Descartar Componente\n");
+    printf("3 - Listar Componentes\n");
+    printf("4 - Organizar Mochila (ordenar componentes)\n");
+    printf("5 - Busca Binaria por Componente-Chave (por nome)");
+    printf("0 - ATIVAR TORRE DE FULGA (sair)\n");
     printf("-------------------------------------------\n");
     printf("Escolha a sua opção: ");
 }
@@ -235,7 +236,7 @@ void listarItens(freefire *lista)
 
      for(int i = 0; i < lista->total_itens; i++)
      {
-        printf("%s\t\t| %s\t\t| %d\n", lista->item[i], lista->tipo[i], lista->quant[i]);
+        printf("%-15s| %-15s| %-10d\n", lista->item[i], lista->tipo[i], lista->quant[i]);
      }
 }
 
