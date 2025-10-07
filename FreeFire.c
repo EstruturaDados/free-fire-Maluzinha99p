@@ -10,13 +10,17 @@
 #define QUANT_ITENS 10
 #define TAM_STRING 100
 
-typedef struct{
-    char item[QUANT_ITENS][TAM_STRING];
-    char tipo[QUANT_ITENS][TAM_STRING];
-    int quant[QUANT_ITENS];
-    int prioridade[QUANT_ITENS];
+typedef struct {
+    char item[TAM_STRING];
+    char tipo[TAM_STRING];
+    int quant;
+    int prioridade;
+} Item;
+
+typedef struct {
+    Item lista[QUANT_ITENS];
     int total_itens;
-}freefire;
+} freefire;
 
 //DECLARANCO AS FUNÇÕES
 void limparBuffer();
@@ -107,7 +111,7 @@ int main() {
                 insertionSort(&mochila, QUANT_ITENS, op);
 
                 listarItens(&mochila);
-                prrintf("\nPressione enter para sair...");
+                printf("\nPressione enter para sair...");
                 limparBuffer();
                 limparTela();
 
@@ -144,16 +148,15 @@ int main() {
 //limparBuffer()
 void limparBuffer()
 {
-    while(getchar() != '\n');
+    while (getchar() != '\n');
 }
 // limparTela():
 // Simula a limpeza da tela imprimindo várias linhas em branco.
 void limparTela() {
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+    for(int i = 0; i <= 10; i++)
+    {
+        printf("\n\n");
+    }
 }
 
 
@@ -164,7 +167,7 @@ void menuPrincipal(freefire *lista)
     printf("=========================================\n");
     printf(" MOCHILA DE SOBREVIVENCIA - CODIGO ILHA\n");
     printf("=========================================\n");
-    printf("Itens da mochila %d/10\n\n", lista->total_itens);
+    printf("Itens da mochila %d/%d\n\n", lista->total_itens, QUANT_ITENS);
 
     printf("1 - Inserir Componente\n");
     printf("2 - Descartar Componente\n");
@@ -188,22 +191,23 @@ void inicializarLista(freefire *lista)
 // Após inserir, marca a mochila como "não ordenada por nome".
 void inserirItem(freefire *lista, const char *texto, const char *tipos, int quantidade, int p)
 {
-    if(lista->total_itens == QUANT_ITENS)
+    if (lista->total_itens == QUANT_ITENS)
     {
-        printf("\nA mochila esta cheia! Tire algum item de quiser adicionar outro...\n\n");
-        while(getchar() != '\n');
+        printf("\nA mochila está cheia! Tire algum item antes de adicionar outro...\n\n");
+        while (getchar() != '\n');
         getchar();
+        return;
     }
 
-    strcpy(lista->item[lista->total_itens], texto);
-    strcpy(lista->tipo[lista->total_itens], tipos);
-    lista->quant[lista->total_itens] = quantidade;
-    lista->prioridade[lista->total_itens] = p;
+    strcpy(lista->lista[lista->total_itens].item, texto);
+    strcpy(lista->lista[lista->total_itens].tipo, tipos);
+    lista->lista[lista->total_itens].quant = quantidade;
+    lista->lista[lista->total_itens].prioridade = p;
 
     lista->total_itens++;
+
     printf("\nItens \"%s\" cadastrado com sucesso!\n", texto);
     printf("-------------------------------------------\n\n");
-
 }
 
 // removerItem():
@@ -213,27 +217,24 @@ void removerItem(freefire *lista, char *texto)
 {
     int pos = -1;
 
-    for(int i = 0; i < QUANT_ITENS; i++)
+    for (int i = 0; i < lista->total_itens; i++)
     {
-        if(strcmp(lista->item[i], texto) == 0)
+        if (strcmp(lista->lista[i].item, texto) == 0)
         {
             pos = i;
             break;
         }
     }
 
-    if(pos == -1)
+    if (pos == -1)
     {
         printf("O item \"%s\" não existe!\n", texto);
         return;
-    } 
+    }
 
-    for(int i = pos; i < lista->total_itens; i++)
+    for (int i = pos; i < lista->total_itens - 1; i++)
     {
-        strcpy(lista->item[i], lista->item[i+1]);
-        strcpy(lista->tipo[i], lista->tipo[i+1]);
-        lista->quant[i] = lista->quant[i+1];
-        lista->prioridade[i] = lista->prioridade[i+1];
+        lista->lista[i] = lista->lista[i + 1];
     }
 
     lista->total_itens--;
@@ -244,21 +245,24 @@ void removerItem(freefire *lista, char *texto)
 // Exibe uma tabela formatada com todos os componentes presentes na mochila.
 void listarItens(freefire *lista)
 {
-     if(lista->total_itens == 0)
-     {
+    if (lista->total_itens == 0)
+    {
         printf("Não há itens na lista!\n");
-     }
+        return;
+    }
 
-     printf("\n--- ITENS DA MOCHILA (%d/10) ---\n", lista->total_itens);
-     printf("----------------------------------------------------------------------------------\n");
-     printf("NOME\t\t| TIPO\t\t| QUANTIDADE\t\t| PRIORIDADE\n");
-     printf("----------------------------------------------------------------------------------");
+    printf("\n--- ITENS DA MOCHILA (%d/%d) ---\n", lista->total_itens, QUANT_ITENS);
+    printf("----------------------------------------------------------------------------------\n");
+    printf("NOME\t\t| TIPO\t\t| QUANTIDADE\t\t| PRIORIDADE\n");
+    printf("----------------------------------------------------------------------------------");
 
-     for(int i = 0; i < lista->total_itens; i++)
-     {
-        printf("\n%-50s| %-50s| %-50d | %-50d", lista->item[i], lista->tipo[i], lista->quant[i], lista->prioridade[i]);
-     }
+    for (int i = 0; i < lista->total_itens; i++)
+    {
+        printf("\n%-50s| %-50s| %-50d | %-50d", lista->lista[i].item, lista->lista[i].tipo, lista->lista[i].quant, lista->lista[i].prioridade);
+    }
+    printf("\n");
 }
+
 
 // menuDeOrdenacao():
 // Permite ao jogador escolher como deseja ordenar os itens.
@@ -281,53 +285,50 @@ void menuDeOrdenacao()
 // - Por nome (ordem alfabética)
 // - Por tipo (ordem alfabética)
 // - Por prioridade (da mais alta para a mais baixa)
-void insertionSort(freefire lista[], int tamanho, int op)
+void insertionSort(freefire *lista, int op)
 {
-    freefire chave;
-    int j;
+    int i, j;
+    Item chave;
 
-    for(int i = 1; i < tamanho; i++)
+    for (i = 1; i < lista->total_itens; i++)
     {
-        chave = lista[i];
-        j = i-1;
+        chave = lista->lista[i];
+        j = i - 1;
 
-        if(op == 1)
-        {
-            while(j >= 0 && strcmp(lista[j].item, chave.item) > 0)
+        // Por nome
+        if (op == 1)
+        { 
+            while (j >= 0 && strcmp(lista->lista[j].item, chave.item) > 0)
             {
-                lista[j + 1] = lista[j];
+                lista->lista[j + 1] = lista->lista[j];
                 j--;
             }
-
-            lista[j + 1] = chave;
         }
 
-        else if(op == 2)
-        {
-            while(j >= 0 && strmp(lista[j].tipo, chave.tipo) > 0)
+        // Por tipo
+        else if (op == 2)
+        { 
+            while (j >= 0 && strcmp(lista->lista[j].tipo, chave.tipo) > 0)
             {
-                lista[j + 1] = lista[j];
+                lista->lista[j + 1] = lista->lista[j];
                 j--;
             }
-            lista[j + 1] = chave;
         }
 
-        else if(op == 3)
+        // Por prioridade
+        else if (op == 3)
         {
-            while(j <= 0 && lista[j].prioridade < chave.prioridade)
+            while(j >= 0 && lista->lista[j].prioridade < chave.prioridade)
             {
-                lista[j + 1] = lista[j];
+                lista->lista[j + 1] = lista->lista[j];
                 j--;
             }
-            lista[j + 1] = chave;
         }
-        
-        else if(op == 0)
-        {
-            break;
-        }
+
+        lista->lista[j + 1] = chave;
     }
 }
+
 
 // buscaBinariaPorNome():
 // Realiza busca binária por nome, desde que a mochila esteja ordenada por nome.
