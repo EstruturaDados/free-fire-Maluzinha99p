@@ -81,7 +81,7 @@ int main() {
                 printf("Pressione Enter para continuar...");
                 limparBuffer();
                 limparTela();
-            break;
+                break;
 
             case 2:
                 printf("\n--- REMOVENDO ITEN ---\n");
@@ -95,14 +95,14 @@ int main() {
                 printf("Pressione Enter para continuar...");
                 limparBuffer();
                 limparTela();
-            break;
+                break;
 
             case 3:
                 listarItens(&mochila);
                 printf("\nPressione Enter para continuar...");
                 limparBuffer();
                 limparTela();
-            break;
+                break;
 
             case 4:
                 menuDeOrdenacao();
@@ -114,16 +114,17 @@ int main() {
                 printf("\nPressione enter para sair...");
                 limparBuffer();
                 limparTela();
+                break;
 
             case 0:
                 printf("\nPressione Enter para continuar...");
                 while(getchar() != '\n');
                 getchar();
-            break;
+                break;
 
             default:
-                printf("Item inexistente!\n");
-            break;
+                printf("Opção inválida!\n");
+                break;
         }
         
     }while(opcao != 0);
