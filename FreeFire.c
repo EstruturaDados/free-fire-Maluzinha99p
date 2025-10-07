@@ -55,7 +55,7 @@ int main() {
                 printf("Nome do item: ");
                 fgets(itens, TAM_STRING, stdin);
 
-                printf("Digite o tipo (Estrutural, Eletrica, Eletronica): ");
+                printf("Digite o tipo (Estrutural, Eletronico, Eletrica): ");
                 fgets(tipos, TAM_STRING, stdin);
 
                 printf("Digite a quantidade: ");
@@ -152,8 +152,8 @@ void menuPrincipal(freefire *lista)
     printf("=========================================\n");
     printf("Itens da mochila %d/10\n\n", lista->total_itens);
 
-    printf("1 - Inserir Componente) \n");
-    printf("2 -Descartar Componente\n");
+    printf("1 - Inserir Componente\n");
+    printf("2 - Descartar Componente\n");
     printf("3 - Listar Componentes\n");
     printf("4 - Organizar Mochila (ordenar componentes)\n");
     printf("5 - Busca Binaria por Componente-Chave (por nome)");
@@ -236,13 +236,13 @@ void listarItens(freefire *lista)
      }
 
      printf("\n--- ITENS DA MOCHILA (%d/10) ---\n", lista->total_itens);
-     printf("--------------------------------------------------\n");
-     printf("NOME\t\t\t| TIPO\t\t\t| QUANTIDADE\t\t\t| PRIORIDADE\n");
-     printf("--------------------------------------------------\n");
+     printf("----------------------------------------------------------------------------------\n");
+     printf("NOME\t\t| TIPO\t\t| QUANTIDADE\t\t| PRIORIDADE\n");
+     printf("----------------------------------------------------------------------------------");
 
      for(int i = 0; i < lista->total_itens; i++)
      {
-        printf("%-20s| %-20s| %-20d | %-20d\n", lista->item[i], lista->tipo[i], lista->quant[i], lista->prioridade[i]);
+        printf("\n%-50s| %-50s| %-50d | %-50d", lista->item[i], lista->tipo[i], lista->quant[i], lista->prioridade[i]);
      }
 }
 
