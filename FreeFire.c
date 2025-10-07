@@ -14,6 +14,7 @@ typedef struct{
     char item[QUANT_ITENS][TAM_STRING];
     char tipo[QUANT_ITENS][TAM_STRING];
     int quant[QUANT_ITENS];
+    int prioridade[QUANT_ITENS];
     int total_itens;
 }freefire;
 
@@ -21,7 +22,7 @@ typedef struct{
 void limparBuffer();
 void menuPrincipal(freefire *lista);
 void inicializarLista(freefire *lista);
-void inserirItem(freefire *lista, const char *texto, const char *tipos, int quantidade);
+void inserirItem(freefire *lista, const char *texto, const char *tipos, int quantidade, int p);
 void listarItens(freefire *lista);
 void removerItem(freefire *lista, char *texto);
 void limparTela();
@@ -35,7 +36,7 @@ int main() {
     // 4. Ordenar os itens por critério (nome, tipo, prioridade)
     // 5. Realizar busca binária por nome
     // 0. Sair
-    int opcao, quantidade;
+    int opcao, quantidade, p;
     char itens[TAM_STRING], tipos[TAM_STRING], item_remover[TAM_STRING];
 
     freefire mochila;
@@ -50,21 +51,24 @@ int main() {
         switch (opcao)
         {
             case 1:
-                printf("\n\n--- ADICIONAR NOVO ITEM ---\n");
+                printf("\n\n--- Coletando novo Componente ---\n");
                 printf("Nome do item: ");
                 fgets(itens, TAM_STRING, stdin);
 
-                printf("Digite o tipo (arma, munição, cura, etc): ");
+                printf("Digite o tipo (Estrutural, Eletrica, Eletronica): ");
                 fgets(tipos, TAM_STRING, stdin);
 
                 printf("Digite a quantidade: ");
                 scanf("%d", &quantidade);
-                
+
+                printf("Prioridade de Montagem (1-5): ");
+                scanf("%d", &p);
+    
                 //excluindo o \n
                 itens[strcspn(itens, "\n")] = 0;
                 tipos[strcspn(itens, "\n")] = 0;
                 
-                inserirItem(&mochila, itens, tipos, quantidade);
+                inserirItem(&mochila, itens, tipos, quantidade, p);
                 limparBuffer();
 
                 listarItens(&mochila);
@@ -168,7 +172,7 @@ void inicializarLista(freefire *lista)
 // Adiciona um novo componente à mochila se houver espaço.
 // Solicita nome, tipo, quantidade e prioridade.
 // Após inserir, marca a mochila como "não ordenada por nome".
-void inserirItem(freefire *lista, const char *texto, const char *tipos, int quantidade)
+void inserirItem(freefire *lista, const char *texto, const char *tipos, int quantidade, int p)
 {
     if(lista->total_itens == QUANT_ITENS)
     {
@@ -180,6 +184,7 @@ void inserirItem(freefire *lista, const char *texto, const char *tipos, int quan
     strcpy(lista->item[lista->total_itens], texto);
     strcpy(lista->tipo[lista->total_itens], tipos);
     lista->quant[lista->total_itens] = quantidade;
+    lista->prioridade[lista->total_itens] = p;
 
     lista->total_itens++;
     printf("\nItens \"%s\" cadastrado com sucesso!\n", texto);
