@@ -219,6 +219,7 @@ void removerItem(freefire *lista, char *texto)
         strcpy(lista->item[i], lista->item[i+1]);
         strcpy(lista->tipo[i], lista->tipo[i+1]);
         lista->quant[i] = lista->quant[i+1];
+        lista->prioridade[i] = lista->prioridade[i+1];
     }
 
     lista->total_itens--;
@@ -236,12 +237,12 @@ void listarItens(freefire *lista)
 
      printf("\n--- ITENS DA MOCHILA (%d/10) ---\n", lista->total_itens);
      printf("--------------------------------------------------\n");
-     printf("NOME\t\t| TIPO\t\t| QUANTIDADE\n");
+     printf("NOME\t\t\t| TIPO\t\t\t| QUANTIDADE\t\t\t| PRIORIDADE\n");
      printf("--------------------------------------------------\n");
 
      for(int i = 0; i < lista->total_itens; i++)
      {
-        printf("%-15s| %-15s| %-10d\n", lista->item[i], lista->tipo[i], lista->quant[i]);
+        printf("%-20s| %-20s| %-20d | %-20d\n", lista->item[i], lista->tipo[i], lista->quant[i], lista->prioridade[i]);
      }
 }
 
