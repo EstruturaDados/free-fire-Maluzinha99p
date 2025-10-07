@@ -10,6 +10,9 @@
 #define QUANT_ITENS 10
 #define TAM_STRING 100
 
+//VARIAVEL GLOBAL DE VERIFICACAO
+int verificacao = 0;
+
 typedef struct {
     char item[TAM_STRING];
     char tipo[TAM_STRING];
@@ -31,7 +34,7 @@ void listarItens(freefire *lista);
 void removerItem(freefire *lista, char *texto);
 void limparTela();
 void menuDeOrdenacao();
-void insertionSort(freefire *lista, int op);
+int insertionSort(freefire *lista, int op);
 
 
 int main() {
@@ -286,7 +289,7 @@ void menuDeOrdenacao()
 // - Por nome (ordem alfabética)
 // - Por tipo (ordem alfabética)
 // - Por prioridade (da mais alta para a mais baixa)
-void insertionSort(freefire *lista, int op)
+int insertionSort(freefire *lista, int op)
 {
     int i, j;
     Item chave;
@@ -304,6 +307,8 @@ void insertionSort(freefire *lista, int op)
                 lista->lista[j + 1] = lista->lista[j];
                 j--;
             }
+
+            verificacao = 1;
         }
 
         // Por tipo
@@ -335,3 +340,37 @@ void insertionSort(freefire *lista, int op)
 // Realiza busca binária por nome, desde que a mochila esteja ordenada por nome.
 // Se encontrar, exibe os dados do item buscado.
 // Caso contrário, informa que não encontrou o item.
+int buscaBinariaPorNome(freefire *lista, char valor[TAM_STRING])
+{
+    if (verificacao == 0)
+    {
+        printf("ALERTA: A busca binária requer que a mochila esteja ordenada por NOME.\n");
+        printf("Use a opção 4 para organizar a mochila primeiro.\n\n");
+        return -1;
+    }
+
+    int inicio = 0;
+    int fim = lista->total_itens - 1;
+
+    while (inicio <= fim)
+    {
+        int meio = (inicio + fim) / 2;
+
+        int cmp = strcmp(lista->lista[meio].item, valor);
+
+        if (cmp == 0)
+        {
+            return meio; // encontrou
+        }
+        else if (cmp < 0)
+        {
+            inicio = meio + 1;
+        }
+        else
+        {
+            fim = meio - 1;
+        }
+    }
+
+    return -1; // não encontrou
+}
