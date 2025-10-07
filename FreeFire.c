@@ -31,7 +31,7 @@ void listarItens(freefire *lista);
 void removerItem(freefire *lista, char *texto);
 void limparTela();
 void menuDeOrdenacao();
-void insertionSort(freefire lista[], int tamanho, int op);
+void insertionSort(freefire *lista, int op);
 
 
 int main() {
@@ -108,7 +108,7 @@ int main() {
                 menuDeOrdenacao();
                 printf("Escolha sua opcao: ");
                 scanf("%d", &op);
-                insertionSort(&mochila, QUANT_ITENS, op);
+                insertionSort(&mochila, op);
 
                 listarItens(&mochila);
                 printf("\nPressione enter para sair...");
@@ -155,7 +155,7 @@ void limparBuffer()
 void limparTela() {
     for(int i = 0; i <= 10; i++)
     {
-        printf("\n\n");
+        printf("\n\n\n\n");
     }
 }
 
@@ -173,7 +173,7 @@ void menuPrincipal(freefire *lista)
     printf("2 - Descartar Componente\n");
     printf("3 - Listar Componentes\n");
     printf("4 - Organizar Mochila (ordenar componentes)\n");
-    printf("5 - Busca Binaria por Componente-Chave (por nome)");
+    printf("5 - Busca Binaria por Componente-Chave (por nome)\n");
     printf("0 - ATIVAR TORRE DE FULGA (sair)\n");
     printf("-------------------------------------------\n");
     printf("Escolha a sua opção: ");
