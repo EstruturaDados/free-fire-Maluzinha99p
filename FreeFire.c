@@ -88,14 +88,14 @@ int main() {
 
                 removerItem(&mochila, item_remover);
                 listarItens(&mochila);
-                printf("Clique Enter para continuar...");
+                printf("Pressione Enter para continuar...");
                 limparBuffer();
                 limparTela();
             break;
 
             case 3:
                 listarItens(&mochila);
-                printf("\nClique Enter para continuar...");
+                printf("\nPressione Enter para continuar...");
                 limparBuffer();
                 limparTela();
             break;
@@ -106,8 +106,13 @@ int main() {
                 scanf("%d", &op);
                 insertionSort(&mochila, QUANT_ITENS, op);
 
+                listarItens(&mochila);
+                prrintf("\nPressione enter para sair...");
+                limparBuffer();
+                limparTela();
+
             case 0:
-                printf("\nClique Enter para continuar...");
+                printf("\nPressione Enter para continuar...");
                 while(getchar() != '\n');
                 getchar();
             break;
