@@ -35,6 +35,7 @@ void removerItem(freefire *lista, char *texto);
 void limparTela();
 void menuDeOrdenacao();
 int insertionSort(freefire *lista, int op);
+int buscaBinariaPorNome(freefire *lista, const char *valor);
 
 
 int main() {
@@ -120,9 +121,10 @@ int main() {
                 break;
 
             case 5:
-                printf("\n--- Busca Binária ---");
+                printf("\n-- Busca Binária ---\n");
                 printf("Nome do componente a buscar: ");
                 fgets(valor, TAM_STRING, stdin);
+                valor[strcspn(valor, "\n")] = 0;
 
                 buscaBinariaPorNome(&mochila, valor);
                 printf("Pressione enter para continuar...");
@@ -131,9 +133,7 @@ int main() {
                 break;
 
             case 0:
-                printf("\nPressione Enter para continuar...");
-                while(getchar() != '\n');
-                getchar();
+                printf("\nSaindo do sistema...");
                 break;
 
             default:
@@ -273,7 +273,7 @@ void listarItens(freefire *lista)
 
     for (int i = 0; i < lista->total_itens; i++)
     {
-        printf("\n%-50s| %-50s| %-50d | %-50d", lista->lista[i].item, lista->lista[i].tipo, lista->lista[i].quant, lista->lista[i].prioridade);
+        printf("\n%-20s| %-20s| %-20d | %-20d", lista->lista[i].item, lista->lista[i].tipo, lista->lista[i].quant, lista->lista[i].prioridade);
     }
     printf("\n");
 }
@@ -285,8 +285,8 @@ void listarItens(freefire *lista)
 // Exibe a quantidade de comparações feitas (análise de desempenho).
 void menuDeOrdenacao()
 {
-    printf("--- Estratégia de Oranizaçõa ---\n");
-    printf("Como deseja organizar os componentes? ");
+    printf("\n--- Estratégia de Oranizaçõa ---\n");
+    printf("Como deseja organizar os componentes?\n");
     printf("1 - Por Nome\n");
     printf("2 - Por Tipo\n");
     printf("3 - Por Prioridade de Montagem\n");
@@ -351,7 +351,7 @@ int insertionSort(freefire *lista, int op)
 // Realiza busca binária por nome, desde que a mochila esteja ordenada por nome.
 // Se encontrar, exibe os dados do item buscado.
 // Caso contrário, informa que não encontrou o item.
-int buscaBinariaPorNome(freefire *lista, char valor[TAM_STRING])
+int buscaBinariaPorNome(freefire *lista, const char *valor)
 {
     if (verificacao == 0)
     {
