@@ -46,7 +46,7 @@ int main() {
     // 5. Realizar busca binária por nome
     // 0. Sair
     int opcao, quantidade, p, op;
-    char itens[TAM_STRING], tipos[TAM_STRING], item_remover[TAM_STRING];
+    char itens[TAM_STRING], tipos[TAM_STRING], item_remover[TAM_STRING], valor[TAM_STRING];
 
     freefire mochila;
 
@@ -115,6 +115,17 @@ int main() {
 
                 listarItens(&mochila);
                 printf("\nPressione enter para sair...");
+                limparBuffer();
+                limparTela();
+                break;
+
+            case 5:
+                printf("\n--- Busca Binária ---");
+                printf("Nome do componente a buscar: ");
+                fgets(valor, TAM_STRING, stdin);
+
+                buscaBinariaPorNome(&mochila, valor);
+                printf("Pressione enter para continuar...");
                 limparBuffer();
                 limparTela();
                 break;
@@ -360,6 +371,8 @@ int buscaBinariaPorNome(freefire *lista, char valor[TAM_STRING])
 
         if (cmp == 0)
         {
+            printf("\n\n--- Item encontrado! ---");
+            printf("\nItem: %s   | Tipo: %s   | Qtd: %d   | Prio: %d   \n", lista->lista[meio].item, lista->lista[meio].tipo, lista->lista[meio].quant, lista->lista[meio].prioridade);
             return meio; // encontrou
         }
         else if (cmp < 0)
