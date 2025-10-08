@@ -360,30 +360,34 @@ int buscaBinariaPorNome(freefire *lista, const char *valor)
         return -1;
     }
 
-    int inicio = 0;
-    int fim = lista->total_itens - 1;
-
-    while (inicio <= fim)
+    else
     {
-        int meio = (inicio + fim) / 2;
+        int inicio = 0;
+        int fim = lista->total_itens - 1;
 
-        int cmp = strcmp(lista->lista[meio].item, valor);
+        while (inicio <= fim)
+        {
+            int meio = (inicio + fim) / 2;
 
-        if (cmp == 0)
-        {
-            printf("\n\n--- Item encontrado! ---");
-            printf("\nItem: %s   | Tipo: %s   | Qtd: %d   | Prio: %d   \n", lista->lista[meio].item, lista->lista[meio].tipo, lista->lista[meio].quant, lista->lista[meio].prioridade);
-            return meio; // encontrou
-        }
-        else if (cmp < 0)
-        {
-            inicio = meio + 1;
-        }
-        else
-        {
-            fim = meio - 1;
+            int cmp = strcmp(lista->lista[meio].item, valor);
+
+            if (cmp == 0)
+            {
+                printf("\n\n--- Item encontrado! ---");
+                printf("\nItem: %s   | Tipo: %s   | Qtd: %d   | Prio: %d   \n", lista->lista[meio].item, lista->lista[meio].tipo, lista->lista[meio].quant, lista->lista[meio].prioridade);
+                return meio; // encontrou
+            }
+            else if (cmp < 0)
+            {
+                inicio = meio + 1;
+            }
+            else
+            {
+                fim = meio - 1;
+            }
         }
     }
+    
 
     return -1; // não encontrou
 }
